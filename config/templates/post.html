@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<h1>Latest News</h1>
+<div class="news-list">
+    {% for article in articles %}
+    <section class="news-list">
+        <div class="news-item">
+            <img src="{{ article.image.url }}" alt="{{ image.title }}">
+            <h3><a href="{% url 'article_detail' article.id %}">{{ article.title }}</a></h3>
+            <p>{{ article.category }}</p>
+        </div>
+    </section>
+    {% empty %}
+        <p>No news available in this category.</p>
+    {% endfor %}
+</div>
+<div class="last-news">
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam fugiat doloremque eveniet deserunt. Commodi quae, earum dicta obcaecati corrupti dolorum distinctio nulla, laboriosam consequatur sequi esse maiores? Animi, aliquid rerum?</p>
+</div>
+{% endblock content %}
+
