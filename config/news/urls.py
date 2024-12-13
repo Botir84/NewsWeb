@@ -11,6 +11,7 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('our-team/', views.our_team, name='our_team'),
     path('create_article/', views.create_article, name='create_article'),
+    path('delete_article/', views.delete_article, name='delete_article')
 ]
 
 if settings.DEBUG:

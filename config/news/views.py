@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article
 from .forms import ArticleForm
+from django.http import HttpResponseForbidden
 
 def create_article(request):
     if request.method == 'POST':
@@ -33,3 +34,15 @@ def contact(request):
 def our_team(request):
     return render(request, 'our_team.html')
 
+def delete_article(request):
+    if not request.user.is_staff:  # Ensure only admins can access this page
+        return HttpResponseForbidden("You do not have permission to delete articles.")
+    
+    if request.method == 'POST':
+        article_id = request.POST.get('article_id')  # Get the article ID from the form
+        article = get_object_or_404(Article, id=article_id)
+        article.delete()
+        return redirect('delete_article')  # Refresh the page after deletion
+
+    articles = Article.objects.all().order_by('-published_date')
+    return render(request, 'delete_article.html', {'articles': articles})
