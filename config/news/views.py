@@ -1,5 +1,16 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article
+from .forms import ArticleForm
+
+def create_article(request):
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')  # Redirect to the home page after saving
+    else:
+        form = ArticleForm()
+    return render(request, 'create_article.html', {'form': form})
 
 def home(request):
     articles = Article.objects.all().order_by('-published_date')
@@ -21,3 +32,4 @@ def contact(request):
 
 def our_team(request):
     return render(request, 'our_team.html')
+

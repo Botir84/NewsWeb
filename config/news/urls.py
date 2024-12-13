@@ -9,7 +9,8 @@ urlpatterns = [
     path('category/<str:category_name>/', views.category, name='category'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
-    path('our-team/', views.our_team, name='our_team')
+    path('our-team/', views.our_team, name='our_team'),
+    path('create_article/', views.create_article, name='create_article'),
 ]
 
 if settings.DEBUG:
