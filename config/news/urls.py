@@ -11,7 +11,10 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('our-team/', views.our_team, name='our_team'),
     path('create_article/', views.create_article, name='create_article'),
-    path('delete_article/', views.delete_article, name='delete_article')
+    path('delete_article/', views.delete_article, name='delete_article'),
+    path('login/', views.login_view, name='login'),
+    path('signup/', views.signup_view, name='signup'),
+    path('logout/', views.logout_view, name='logout'),
 ]
 
 if settings.DEBUG:

@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article
 from .forms import ArticleForm
 from django.http import HttpResponseForbidden
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout
+from django.contrib.auth.models import User
+from django.contrib import messages
 
 def create_article(request):
     if request.method == 'POST':
@@ -46,3 +51,48 @@ def delete_article(request):
 
     articles = Article.objects.all().order_by('-published_date')
     return render(request, 'delete_article.html', {'articles': articles})
+
+
+
+
+
+# Login and Signup in viws
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return render(request, 'admin_base.html') # render to admin base page after login 
+        else:
+            messages.error(request, 'Invalid username or password')
+    else:
+        form = AuthenticationForm()
+    
+    return render(request, 'login.html', {'form': form})
+
+# Signup View
+def signup_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        if password == confirm_password:
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'Username already taken')
+            else:
+                user = User.objects.create_user(username=username, password=password)
+                user.save()
+                login(request, user)
+                return redirect('home')  # Redirect to the home page after signup
+        else:
+            messages.error(request, 'Passwords do not match')
+    
+    return render(request, 'signup.html')
+
+# Logout View
+def logout_view(request):
+    logout(request)
+    return redirect('home')
