@@ -1,4 +1,5 @@
 from django.db import models
+import os
 
 class Article(models.Model):
     title = models.CharField(max_length=200)
@@ -14,3 +15,10 @@ class Article(models.Model):
     
     def __str__(self):
         return self.title
+    
+    def delete(self, *args, **kwargs):
+        # Delete the associated image file from the filesystem
+        if self.image:
+            if os.path.isfile(self.image.path):
+                os.remove(self.image.path)
+        super().delete(*args, **kwargs)
